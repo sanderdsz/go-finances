@@ -1,9 +1,10 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text } from "react-native";
+import { RectButton } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 
-export const Container = styled(TouchableOpacity)`
+export const Container = styled(RectButton)`
   padding: 18px 16px;
 
   flex-direction: row;
