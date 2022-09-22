@@ -5,6 +5,8 @@ import { getBottomSpace } from "react-native-iphone-x-helper";
 import { ActivityIndicator } from "react-native";
 import { useTheme } from "styled-components";
 
+import { useAuth } from "../../hooks/auth";
+
 import { HighlightCard } from "../../components/HighlightCard";
 import {
   TransactionCard,
@@ -51,29 +53,33 @@ export function Dashboard() {
     {} as HighlightData
   );
 
-  const dataKey = "@gofinances:transactions";
-
   const theme = useTheme();
+
+  const { signOut, user } = useAuth();
+
+  const dataKey = `@gofinances:transactions_user:${user.id}`;
 
   function getLastTransactionDate(
     collection: DataListProps[],
     type: "positive" | "negative"
   ) {
-    const lastTransactions = Math.max.apply(
-      Math,
-      collection
-        .filter((transaction: DataListProps) => transaction.type === type)
-        .map((transaction: DataListProps) =>
-          new Date(transaction.date).getTime()
-        )
+    const collectionFiltered = collection.filter((element) => {
+      element.type === type;
+    });
+
+    const lastTransaction = new Date(
+      Math.max.apply(
+        Math,
+        collection
+          .filter((transaction) => transaction.type === type)
+          .map((transaction) => new Date(transaction.date).getTime())
+      )
     );
 
-    const date = Intl.DateTimeFormat("pt-BR", {
-      day: "2-digit",
-      month: "long",
-    }).format(new Date(lastTransactions));
-
-    return date;
+    return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString(
+      "pt-BR",
+      { month: "long" }
+    )}`;
   }
 
   async function loadTransactions() {
@@ -177,16 +183,16 @@ export function Dashboard() {
               <UserInfo>
                 <Photo
                   source={{
-                    uri: "https://avatars.githubusercontent.com/u/49321724?v=4",
+                    uri: `${user.photo}`,
                   }}
                 />
                 <User>
                   <UserGreeting>Olá, </UserGreeting>
-                  <UserName>Sander</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
 
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={signOut}>
                 <Icon name={"power"} />
               </LogoutButton>
             </UserWrapper>

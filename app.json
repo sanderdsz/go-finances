@@ -1,7 +1,9 @@
 {
   "expo": {
-    "name": "go-finances",
-    "slug": "go-finances",
+    "name": "gofinances",
+    "slug": "gofinances",
+    "scheme": "gofinances",
+    "owner": "sanderdsz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,13 +20,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sanderdsz.gofinances"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.sanderdsz.gofinances"
     },
     "web": {
       "favicon": "./assets/favicon.png"

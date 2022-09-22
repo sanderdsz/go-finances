@@ -21,6 +21,7 @@ import { TransactionButton } from "../../components/Form/TransactionButton";
 import { CategorySelectButton } from "../../components/Form/CategorySelectButton";
 import { CategorySelect } from "../CategorySelect";
 import { InputForm } from "../../components/Form/InputForm";
+import { useAuth } from "../../hooks/auth";
 
 interface FormData {
   name: string;
@@ -48,6 +49,7 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
+  const { user } = useAuth();
 
   const {
     control,
@@ -56,7 +58,7 @@ export function Register() {
     formState: { errors },
   } = useForm<FormData>({ resolver: yupResolver(schema) });
 
-  const dataKey = "@gofinances:transactions";
+  const dataKey = `@gofinances:transactions_user:${user.id}`;
 
   const navigation = useNavigation<NavigationProps>();
 
@@ -116,14 +118,11 @@ export function Register() {
 
       Alert.alert("Não foi possível cadastrar");
     }
-    console.log(transaction);
   }
 
   useEffect(() => {
     async function loadData() {
       const data = await AsyncStorage.getItem(dataKey);
-
-      console.log(JSON.parse(data!));
     }
     loadData();
   }, []);
